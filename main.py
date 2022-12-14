@@ -105,7 +105,6 @@ else:
     link = normalize_link(link)
     
     print ("  ===================   ")
-    print ("find this url: " + link)
     
     download_page = requests.get(link)
     
