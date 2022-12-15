@@ -150,10 +150,22 @@ else:
     print ("i will get this link: ")
     print (final_link)
     
+    file_name = ""
+    for i in range (len (final_link) - 1, 0, -1):
+        
+        if final_link[i] != "/":
+            file_name += final_link[i]
+        
+        else:
+            break
+            
+    file_name = file_name [::-1]
+    print (file_name)
+    
     if CONFIG["location"][-1] != "/":
         CONFIG["location"] += "/"
 
-    response = wget.download(final_link, CONFIG["location"] + series_name + "-" + str(season_number) + "-" + resolution_number + "-" + episode)
+    response = wget.download(final_link, CONFIG["location"] + file_name)
     
     
     
