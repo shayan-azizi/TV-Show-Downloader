@@ -177,7 +177,7 @@ def start_download (show_name : str, season_number : int, resolution_number : st
         
         OBJ = SmartDL(url, CONFIG["location"] + download_name)
         OBJ.start()
-        
+
 def terminate_download ():
     OBJ.stop()
     
