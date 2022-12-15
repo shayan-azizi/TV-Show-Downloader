@@ -5,7 +5,7 @@ import os
 
 URL = "https://mobomovies.fun/post/"
 CONFIG = json.load(open("config.json"))
-print (CONFIG["location"])
+
 
 def normalize_name (series_name : str) -> str:
     series_name = series_name.lower()
@@ -63,16 +63,27 @@ else:
     season_number = int(input ("Enter the season number: "))
     
     resolution_number = input ("Enter your resolution: ")
-    
+
     resolutions = []
-    for i in range (seasons[season_number - 1], seasons[season_number]):
+    
+    try:
+        limit = seasons[season_number]
+        
+    except:
+        limit = len (page_list) - 100
+        
+    for i in range (seasons[season_number - 1], limit):
         element = page_list[i]
         if resolution_number in element:
             resolutions.append (i)
     
     limit = resolutions[-1]    
     if len (resolutions) == 1:
-        limit = seasons[season_number]
+        try:
+            limit = seasons[season_number]
+        
+        except:
+            limit = len(page_list) - 100
     
     subtitle = 0
     for i in range (resolutions[0], limit):
@@ -136,8 +147,13 @@ else:
     
     final_link = final_link[1:-37]
     
+    print ("i will get this link: ")
+    print (final_link)
+    
+    if CONFIG["location"][-1] != "/":
+        CONFIG["location"] += "/"
 
-    response = wget.download(final_link, CONFIG["location"] + series_name + str(season_number) + resolution_number + episode)
+    response = wget.download(final_link, CONFIG["location"] + series_name + "-" + str(season_number) + "-" + resolution_number + "-" + episode)
     
     
     
