@@ -36,18 +36,8 @@ def normalize_link (link_tag : str) -> str:
             append = False
     
     return link[:-1]
-    
-    
-            
-series_name = input("Enter the TV-show name: ")
-series_name = normalize_name(series_name)
 
-page = requests.get(URL + series_name)
-
-if "اوپس" in page.text:
-    print ("Sorry dude we can't find it :(")
-
-else:
+def download (page, season_number, resolution_number, episode):
     print ("WOW! We find that show!")
     
     page_list = page.text.split ("\n")
@@ -60,9 +50,8 @@ else:
             seasons.append (i)
             
     print (f"That show has {len(seasons)} seasons")
-    season_number = int(input ("Enter the season number: "))
+    season_number = int(season_number)
     
-    resolution_number = input ("Enter your resolution: ")
 
     resolutions = []
     
@@ -94,7 +83,6 @@ else:
             break
         
     
-    episode = input ("Enter the episode number: ")
     
     episode_idx = 0
     for i in range (subtitle, limit):
@@ -162,15 +150,24 @@ else:
     file_name = file_name [::-1]
     print (file_name)
     
-    if CONFIG["location"][-1] != "/":
-        CONFIG["location"] += "/"
+    if CONFIG["location"] != "":
+        if CONFIG["location"][-1] != "/":
+            CONFIG["location"] += "/"
 
     response = wget.download(final_link, CONFIG["location"] + file_name)
     
-    
-    
-    
+            
+
+def start_download (show_name : str, season_number : int, resolution_number : str, episode : str):
+    show_name = normalize_name(show_name)
+
+    page = requests.get(URL + show_name)
 
 
-    
+
+    if "اوپس" in page.text:
+        print ("Sorry dude we can't find it :(")
+
+    else:
+        download(page, season_number, resolution_number, episode)
     
