@@ -74,7 +74,7 @@ TV-Show-Downloader is an [emailware](https://en.wiktionary.org/wiki/emailware). 
 [Download-Manager](https://github.com/hooman734/Download-Manager)
 ## Support
 
-Just leave start! <3
+Just leave star! <3
 
 ## You may also like...
 
