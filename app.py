@@ -32,21 +32,11 @@ def terminate_download ():
     scrapper.terminate_download()
 
 def update_status ():
-    
-    while not OBJ.isFinished():
-        '''
-                print("Speed: %s" % obj.get_speed(human=True))
-        print("Already downloaded: %s" % obj.get_dl_size(human=True))
-        print("Eta: %s" % obj.get_eta(human=True))
-        print("Progress: %d%%" % (obj.get_progress()*100))
-        print("Progress bar: %s" % obj.get_progress_bar())
-        print("Status: %s" % obj.get_status())
-        print("\n"*2+"="*50+"\n"*2)
-        
-        '''
-        download_status.config (text=f"Speed: {OBJ.get_speed(human=True)} | Already downloaded: {OBJ.get_dl_size(human=True)} | Eta: {OBJ.get_eta(human=True)}")
-        print(f"Speed: {OBJ.get_speed(human=True)} | Already downloaded: {OBJ.get_dl_size(human=True)} | Eta: {OBJ.get_eta(human=True)}")
-        
+    if OBJ != "":
+        while not OBJ.isFinished():
+            download_status.config (text=f"Speed: {OBJ.get_speed(human=True)} | Already downloaded: {OBJ.get_dl_size(human=True)} | Eta: {OBJ.get_eta(human=True)}")
+            # print(f"Speed: {OBJ.get_speed(human=True)} | Already downloaded: {OBJ.get_dl_size(human=True)} | Eta: {OBJ.get_eta(human=True)}")
+            
 
 name_label = Label(root, text= "TV-Show name: ", font=('vazirmatn', 16))
 name_label.grid(row = 0,column=0, padx=5, pady=5)
@@ -84,5 +74,6 @@ terminate_button.grid(row = 5, column=0, padx=1, pady=5)
 download_status = Label(root, text= "")
 download_status.grid(row=6, column=0, padx=1, pady=5)
 
+update_status()
 
 root.mainloop()
