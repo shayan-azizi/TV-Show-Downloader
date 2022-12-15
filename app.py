@@ -1,9 +1,7 @@
+import threading
 import scrapper
+from scrapper import OBJ
 from tkinter import *
-import requests
-import wget
-import json
-import os
 
 root = Tk()
 root.title("TV-Show Downloader")
@@ -15,12 +13,40 @@ resolution = StringVar()
 episode = StringVar()
 
 def download ():
-    scrapper.start_download(name.get(), season.get(), resolution.get(), episode.get())
+    
+    semaphore = threading.Semaphore(2)
+    threading.Thread(target=scrapper.start_download, args=(name.get(), season.get(), resolution.get(), episode.get()),).start()
+
+    
     name.set("")
     season.set("")
     resolution.set("")
     episode.set("")
     
+    download_button.flash()
+    
+def pause_download ():
+    scrapper.pause_download()
+
+def terminate_download ():
+    scrapper.terminate_download()
+
+def update_status ():
+    
+    while not OBJ.isFinished():
+        '''
+                print("Speed: %s" % obj.get_speed(human=True))
+        print("Already downloaded: %s" % obj.get_dl_size(human=True))
+        print("Eta: %s" % obj.get_eta(human=True))
+        print("Progress: %d%%" % (obj.get_progress()*100))
+        print("Progress bar: %s" % obj.get_progress_bar())
+        print("Status: %s" % obj.get_status())
+        print("\n"*2+"="*50+"\n"*2)
+        
+        '''
+        download_status.config (text=f"Speed: {OBJ.get_speed(human=True)} | Already downloaded: {OBJ.get_dl_size(human=True)} | Eta: {OBJ.get_eta(human=True)}")
+        print(f"Speed: {OBJ.get_speed(human=True)} | Already downloaded: {OBJ.get_dl_size(human=True)} | Eta: {OBJ.get_eta(human=True)}")
+        
 
 name_label = Label(root, text= "TV-Show name: ", font=('vazirmatn', 16))
 name_label.grid(row = 0,column=0, padx=5, pady=5)
@@ -47,8 +73,16 @@ episode_entry = Entry(root, textvariable=episode, width=52)
 episode_entry.grid (row=3, column=1, padx=5, pady=5)
 
 download_button = Button(root, text="Download!", command=download)
-download_button.grid(row=4, column=1, padx=0, pady=5)
+download_button.grid(row=4, column=0, padx=1, pady=5)
 
+pause_button = Button(root, text = "Pause / Resume", command=pause_download)
+pause_button.grid(row=4, column=1, padx=1, pady=5)
+
+terminate_button = Button(root, text = "Terminate", command= terminate_download)
+terminate_button.grid(row = 5, column=0, padx=1, pady=5)
+
+download_status = Label(root, text= "")
+download_status.grid(row=6, column=0, padx=1, pady=5)
 
 
 root.mainloop()
