@@ -27,7 +27,10 @@ I was a little lazy in downloading the series I wanted. So I made it automatic.
   <a href="#license">License</a>
 </p>
 
-![screenshot](assets/screen-shot.png)
+<div align = "center">
+<img src = "assets/screen-shot.png">
+</div>
+
 
 ## Key Features
 
