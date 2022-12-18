@@ -36,6 +36,7 @@ I was a little lazy in downloading the series I wanted. So I made it automatic.
 * Find with season number and resolution
 * Download after find the link
   - Download with maximum speed possible
+* Open folder and the file after download
 * Cross platform
   - Windows, macOS and Linux ready.
 
