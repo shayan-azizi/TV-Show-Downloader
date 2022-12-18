@@ -1,10 +1,7 @@
-from pySmartDL import SmartDL
-import json
 import requests
 
 URL = "https://mobomovies.fun/post/"
-CONFIG = json.load(open("config.json"))
-OBJ = ""
+
 
 find = True
 is_paused = False
@@ -104,9 +101,7 @@ def find_link (page, season_number, resolution_number, episode):
     
     
     link = normalize_link(link)
-    
-    print ("  ===================   ")
-    
+        
     download_page = requests.get(link)
     
     download_page_list = download_page.text.split("\n")
@@ -150,18 +145,15 @@ def find_link (page, season_number, resolution_number, episode):
             break
             
     file_name = file_name [::-1]
-    print (file_name)
-    
-    if CONFIG["location"] != "":
-        if CONFIG["location"][-1] != "/":
-            CONFIG["location"] += "/"
 
-    # response = wget.download(final_link, CONFIG["location"] + file_name)
+    
+
+
+
     return [final_link, file_name]
 
-def start_download (show_name : str, season_number : int, resolution_number : str, episode : str):
-    global find, OBJ
-    find = True
+def find_page (show_name : str):
+    
     
     show_name = normalize_name(show_name)
 
@@ -169,14 +161,15 @@ def start_download (show_name : str, season_number : int, resolution_number : st
 
 
     if "اوپس" in page.text:
-        find = False
-
+        return False
+    
     else:
-        find = True
-        url, download_name = find_link(page, season_number, resolution_number, episode)
+        return page
+        # url, download_name = find_link(page, season_number, resolution_number, episode)
         
-        OBJ = SmartDL(url, CONFIG["location"] + download_name)
-        OBJ.start()
+        # OBJ = SmartDL(url, CONFIG["location"] + download_name)
+        # OBJ.start()
+        
 
 def terminate_download ():
     OBJ.stop()

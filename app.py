@@ -1,7 +1,11 @@
+import os
+import vlc
+from pySmartDL import SmartDL
 import threading
+import subprocess
 import scrapper
-from scrapper import OBJ
 from tkinter import *
+import json
 
 root = Tk()
 root.title("TV-Show Downloader")
@@ -12,10 +16,32 @@ season = StringVar()
 resolution = StringVar()
 episode = StringVar()
 
+CONFIG = json.load(open("config.json"))
+
+OBJ = ""
+download_name = ""
+
+
+def start_download (name, season, resolution, episode):
+    global OBJ, download_name, CONFIG
+    
+    if CONFIG["location"] != "":
+        if CONFIG["location"][-1] != "/":
+            CONFIG["location"] += "/"
+    
+    page = scrapper.find_page(name)
+    if  page != False:
+        url, download_name = scrapper.find_link(page, season, resolution, episode)
+        
+        OBJ = SmartDL(url, CONFIG["location"] + download_name)
+        OBJ.start()
+        
+        
+
 def download ():
     
     semaphore = threading.Semaphore(2)
-    threading.Thread(target=scrapper.start_download, args=(name.get(), season.get(), resolution.get(), episode.get()),).start()
+    threading.Thread(target=start_download, args=(name.get(), season.get(), resolution.get(), episode.get()),).start()
 
     
     name.set("")
@@ -31,12 +57,48 @@ def pause_download ():
 def terminate_download ():
     scrapper.terminate_download()
 
-def update_status ():
-    if OBJ != "":
-        while not OBJ.isFinished():
-            download_status.config (text=f"Speed: {OBJ.get_speed(human=True)} | Already downloaded: {OBJ.get_dl_size(human=True)} | Eta: {OBJ.get_eta(human=True)}")
-            # print(f"Speed: {OBJ.get_speed(human=True)} | Already downloaded: {OBJ.get_dl_size(human=True)} | Eta: {OBJ.get_eta(human=True)}")
+def browse_file ():
+
+    default_browser = subprocess.run(["xdg-mime", "query", "default", "inode/directory"],
+                                        stdout=subprocess.PIPE).stdout.decode('utf-8').split('.')[-2].lower()
+
+    
+    path = CONFIG["location"] + download_name
+    threading.Thread(target=os.system, args=(f"{default_browser} {path}",)).start()
+
+
+def start_browse_file ():
+    
+    try:
+        if OBJ.isFinished():
+            browse_file()
             
+        else:
+            browse_button.flash()
+            
+    except:
+        print ("start download first!")
+        
+def open_file ():
+    path = CONFIG["location"] + download_name
+    video_player = subprocess.run(["vlc", path],
+                                        stdout=subprocess.PIPE).stdout.decode('utf-8').split('.')[-2].lower()
+
+    
+    threading.Thread(target=os.system, args=(f"{video_player} {path}",)).start()
+        
+def start_open_file ():
+    
+    try:
+        if OBJ.isFinished():
+            open_file ()
+            
+        else:
+            open_button.flash()
+            
+    except:
+        print ("start download first!")
+    
 
 name_label = Label(root, text= "TV-Show name: ", font=('vazirmatn', 16))
 name_label.grid(row = 0,column=0, padx=5, pady=5)
@@ -71,9 +133,11 @@ pause_button.grid(row=4, column=1, padx=1, pady=5)
 terminate_button = Button(root, text = "Terminate", command= terminate_download)
 terminate_button.grid(row = 5, column=0, padx=1, pady=5)
 
-download_status = Label(root, text= "")
-download_status.grid(row=6, column=0, padx=1, pady=5)
+browse_button = Button(root, text="Open in folder", command=start_browse_file)
+browse_button.grid(row=5, column=1, padx=1, pady=5)
 
-update_status()
+open_button = Button(root, text= "Open File", command=open_file)
+open_button.grid(row = 6, column=0, padx=1, pady=5)
+
 
 root.mainloop()
