@@ -41,7 +41,7 @@ I was a little lazy in downloading the series I wanted. So I made it automatic.
 
 ## How To Use
 
-To clone and run this application, you'll need [Git](https://git-scm.com) and [Python](https://python.org/downloads)  installed on your computer. From your command line:
+To clone and run this application, you'll need [Git](https://git-scm.com) and [Python](https://python.org/downloads)  installed on your computer. Then add your download path in `config.json`. after that run this commands from your command line:
 
 ```bash
 # Clone this repository
