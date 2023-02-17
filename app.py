@@ -52,10 +52,21 @@ def download ():
     download_button.flash()
     
 def pause_download ():
-    scrapper.pause_download()
+    global is_paused
+    
+    if is_paused:
+        OBJ.resume()
+        is_paused = not is_paused
+        
+    else:
+        OBJ.pause()
+        is_paused = not is_paused
+
 
 def terminate_download ():
-    scrapper.terminate_download()
+    global OBJ
+    
+    OBJ.stop()
 
 def browse_file ():
 

@@ -1,6 +1,6 @@
 import requests
 
-URL = "https://mobomovies.fun/post/"
+URL = "https://mobomoviez.fun/post/"
 
 
 find = True
@@ -21,7 +21,7 @@ def normalize_name (series_name : str) -> str:
     return result
 
 def normalize_link (link_tag : str) -> str:
-    link = "https://mobomovies.fun/"
+    link = "https://mobomoviez.fun/"
     append = False
     
     for i in link_tag:
@@ -146,10 +146,6 @@ def find_link (page, season_number, resolution_number, episode):
             
     file_name = file_name [::-1]
 
-    
-
-
-
     return [final_link, file_name]
 
 def find_page (show_name : str):
@@ -165,11 +161,6 @@ def find_page (show_name : str):
     
     else:
         return page
-        # url, download_name = find_link(page, season_number, resolution_number, episode)
-        
-        # OBJ = SmartDL(url, CONFIG["location"] + download_name)
-        # OBJ.start()
-        
 
 def terminate_download ():
     OBJ.stop()
