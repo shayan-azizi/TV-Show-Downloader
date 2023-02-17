@@ -1,5 +1,4 @@
 import os
-import vlc
 from pySmartDL import SmartDL
 import threading
 import subprocess

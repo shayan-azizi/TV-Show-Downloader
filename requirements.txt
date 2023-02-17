@@ -2,4 +2,3 @@ requests
 json
 tkinter
 pySmartDL
-python-vlc
