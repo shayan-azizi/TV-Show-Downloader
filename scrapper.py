@@ -101,52 +101,20 @@ def find_link (page, season_number, resolution_number, episode):
     
     
     link = normalize_link(link)
-        
-    download_page = requests.get(link)
-    
-    download_page_list = download_page.text.split("\n")
-    
-    final_link_tag = ""
-    for i in range (len (download_page_list)):
-        element = download_page_list[i]
-        
-        if "fal fa-download ml-2" in element:
-            final_link_tag = download_page_list[i - 1]
-            break
-    
-    final_link = ""
-    
-    append = False
-    
-    for i in final_link_tag:
-        if append:
-            
-            final_link += i
-        
-        if i == "=":
-            append = True
-            
-        if i == " ":
-            append = False
-            
-    
-    final_link = final_link[1:-37]
-    
-    print ("i will get this link: ")
-    print (final_link)
+
     
     file_name = ""
-    for i in range (len (final_link) - 1, 0, -1):
+    for i in range (len (link) - 1, 0, -1):
         
-        if final_link[i] != "/":
-            file_name += final_link[i]
+        if link[i] != "/":
+            file_name += link[i]
         
         else:
             break
             
     file_name = file_name [::-1]
 
-    return [final_link, file_name]
+    return [link, file_name]
 
 def find_page (show_name : str):
     

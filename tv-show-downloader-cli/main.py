@@ -5,6 +5,9 @@ import time
 
 COMMANDS = ["help", "h", "download", "d", "\n", "", "clear", "cls", "q", "quit", "commands"]
 
+def find_seasons (page : str) -> int:
+    print (page)
+
 def find_page (name : str) -> str:
     page = requests.get("https://mobomoviez.fun/post/" + name)
     
@@ -13,9 +16,6 @@ def find_page (name : str) -> str:
     
     else:
         return page.text
-    
-    
-        
 
 def corrected_name (name : str) -> str:
     name = name.lower()
@@ -56,11 +56,18 @@ def main () -> None:
             
             print ("Finding TV-Show ...")
             
-            if not find_page(show_name):
-                print ("\033[1;31m Sorry can't find that TV-Show") 
+            page = find_page(show_name)
+            if not page:
+                print ("\033[1;31m Can't find that TV-Show") 
 
             else:
-                print ("")
+                print ("Find that TV-Show")
+                
+                find_seasons(page)
+                
+            
+                
+            
             
         
     show_name = input()
